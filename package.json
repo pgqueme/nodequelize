@@ -1,8 +1,10 @@
 {
   "name": "nodequelize",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "NodeJS REST API generator using Express and Sequelize",
   "main": "index.js",
+  "preferGlobal": true,
+  "bin": "index.js",
   "repository": "https://github.com/pgqueme/nodequelize.git",
   "author": "Pablo Quemé",
   "license": "GNU General Public License v3.0",
