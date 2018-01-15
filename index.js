@@ -28,11 +28,39 @@ program
             destination_folder = destination_folder.slice(0, -1);
         }
 
-        template_engine.template_creation('templates/test', { title: config.port })
+        //Create bin/www file
+        template_engine.template_creation('templates/bin/www', { port: config['port'] })
         .then(template => {
-            file_creation.write_file(template, destination_folder + '/test.file')
+            file_creation.write_file(template, destination_folder + '/bin/www')
             .then(result => {
-                console.log(result);
+                console.log('Created bin/www file');
+            });
+        });
+        
+        //Create database configuration file
+        var db_config_json = config['database-config'];
+        var db_config = {
+            username: db_config_json['username'],
+            password: db_config_json['password'],
+            database: db_config_json['database'],
+            host: db_config_json['host'],
+            port: db_config_json['port'],
+            dialect: db_config_json['dialect'],
+        }
+        template_engine.template_creation('templates/config/config.json', db_config)
+        .then(template => {
+            file_creation.write_file(template, destination_folder + '/config/config.json')
+            .then(result => {
+                console.log('Created config/config.json file');
+            });
+        });
+
+        //Create app.js file
+        template_engine.template_creation('templates/app.js', {})
+        .then(template => {
+            file_creation.write_file(template, destination_folder + '/app.js')
+            .then(result => {
+                console.log('Created app.js file');
             });
         });
     });

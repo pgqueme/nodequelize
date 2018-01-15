@@ -1,0 +1,27 @@
+{
+    "development": {
+        "username": "{{username}}",
+        "password": "{{password}}",
+        "database": "{{database}}",
+        "host": "{{host}}",
+        "port": "{{port}}",
+        "dialect": "{{dialect}}"
+    },
+    "test": {
+        "username": "{{username}}",
+        "password": "{{password}}",
+        "database": "{{database}}",
+        "host": "{{host}}",
+        "port": "{{port}}",
+        "dialect": "{{dialect}}"
+    },
+    "production": {
+        "username": "{{username}}",
+        "password": "{{password}}",
+        "database": "{{database}}",
+        "host": "{{host}}",
+        "port": "{{port}}",
+        "dialect": "{{dialect}}"
+    }
+  }
+  
