@@ -1,6 +1,6 @@
 {
   "name": "nodequelize",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NodeJS REST API generator using Express and Sequelize",
   "main": "index.js",
   "preferGlobal": true,
@@ -10,6 +10,8 @@
   "license": "GNU General Public License v3.0",
   "dependencies": {
     "commander": "^2.13.0",
-    "inquirer": "^5.0.0"
+    "inquirer": "^5.0.0",
+    "mkdirp": "^0.5.1",
+    "path": "^0.12.7"
   }
 }
