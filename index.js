@@ -12,13 +12,25 @@ program
 
 //Create files
 program
-    .command('create_file <text> <route>')
-    .alias('cf')
-    .description('Creates a file to the same folder')
-    .action((text, route) => {
-        template_engine.template_creation('templates/test', text)
+    .command('create_project <config_file> [destination_folder]')
+    .alias('cp')
+    .description('Creates a new REST API project to the same folder')
+    .action((config_file, destination_folder) => {
+        //Get the configuration options
+        const fs = require('fs');
+        const config = JSON.parse(fs.readFileSync(config_file, 'utf8'));
+        
+        //Clean folder name
+        if(!destination_folder || destination_folder.trim() == ''){
+            destination_folder = '';
+        }
+        else if(destination_folder.substr(-1) == '/'){
+            destination_folder = destination_folder.slice(0, -1);
+        }
+
+        template_engine.template_creation('templates/test', { title: config.port })
         .then(template => {
-            file_creation.write_file(template, route)
+            file_creation.write_file(template, destination_folder + '/test.file')
             .then(result => {
                 console.log(result);
             });
