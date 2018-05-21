@@ -21,11 +21,12 @@ program.parse(process.argv);
     
 async function create_project(config_file, destination_folder_param) {
     console.log('---------- Starting nodequelize project creation ----------');
-    // ### Get the configuration options ###
+    
+    // Get the configuration options
     var fs = require('fs');
     var config = JSON.parse(fs.readFileSync(config_file, 'utf8'));
 
-    //Clean folder name
+    // Clean folder name
     var destination_folder = './';
     if(destination_folder_param){
         if(destination_folder_param.substr(-1) == '/'){
@@ -33,10 +34,10 @@ async function create_project(config_file, destination_folder_param) {
         }
     }
 
-    //Create bin/www file
+    // Create bin/www file
     await config_creation.www_creation(config, destination_folder);
     
-    //Create database configuration file
+    // Create database configuration file
     await config_creation.db_config_creation(config, destination_folder);    
     
     /*

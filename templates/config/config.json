@@ -1,27 +1,19 @@
 {
-    "development": {
-        "username": "{{username}}",
-        "password": "{{password}}",
-        "database": "{{database}}",
-        "host": "{{host}}",
-        "port": "{{port}}",
-        "dialect": "{{dialect}}"
-    },
-    "test": {
-        "username": "{{username}}",
-        "password": "{{password}}",
-        "database": "{{database}}",
-        "host": "{{host}}",
-        "port": "{{port}}",
-        "dialect": "{{dialect}}"
-    },
     "production": {
-        "username": "{{username}}",
-        "password": "{{password}}",
-        "database": "{{database}}",
-        "host": "{{host}}",
-        "port": "{{port}}",
-        "dialect": "{{dialect}}"
+        "username": "{{production.username}}",
+        "password": "{{production.password}}",
+        "database": "{{production.database}}",
+        "host": "{{production.host}}",
+        "port": "{{production.port}}",
+        "dialect": "{{production.dialect}}"
+    },
+    "development": {
+        "username": "{{development.username}}",
+        "password": "{{development.password}}",
+        "database": "{{development.database}}",
+        "host": "{{development.host}}",
+        "port": "{{development.port}}",
+        "dialect": "{{development.dialect}}"
     }
   }
   

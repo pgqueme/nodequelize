@@ -1,9 +1,11 @@
-//Methods for writing files
+// Methods for writing files
 const file_creation = require('./file_creation');
 const template_engine = require('./template_engine');
 
 /**
  * Writes the bin/www file, responsible of starting the server
+ * @param {*} config 
+ * @param {*} destination_folder 
  */
 async function www_creation(config, destination_folder) {
     var www_config = {
@@ -14,21 +16,37 @@ async function www_creation(config, destination_folder) {
     console.log('[+] Created bin/www file');
 }
 
+/**
+ * Writes the config/config.json file, responsible of the connection details for Sequelize
+ * @param {*} config 
+ * @param {*} destination_folder 
+ */
 async function db_config_creation(config, destination_folder) {
     var db_config_json = config['database-config'];
     var db_config = {
-        username: db_config_json['username'],
-        password: db_config_json['password'],
-        database: db_config_json['database'],
-        host: db_config_json['host'],
-        port: db_config_json['port'],
-        dialect: db_config_json['dialect'],
+        production: {
+            username: db_config_json['prod']['username'],
+            password: db_config_json['prod']['password'],
+            database: db_config_json['prod']['database'],
+            host: db_config_json['prod']['host'],
+            port: db_config_json['prod']['port'],
+            dialect: db_config_json['prod']['dialect'],
+        },
+        development: {
+            username: db_config_json['dev']['username'],
+            password: db_config_json['dev']['password'],
+            database: db_config_json['dev']['database'],
+            host: db_config_json['dev']['host'],
+            port: db_config_json['dev']['port'],
+            dialect: db_config_json['dev']['dialect'],
+        }
     };
     var template = await template_engine.template_creation(__dirname + '/templates/config/config.json', db_config);
     await file_creation.write_file(template, destination_folder + '/config/config.json')
     console.log('[+] Created config/config.json file');
 }
 
+// Expose methods
 module.exports = {
     www_creation,
     db_config_creation,
