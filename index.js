@@ -40,15 +40,8 @@ async function create_project(config_file, destination_folder_param) {
     // Create database configuration file
     await config_creation.db_config_creation(config, destination_folder);    
     
-    /*
-    //Create app.js file
-    template_engine.template_creation('templates/app.js', {})
-    .then(template => {
-        file_creation.write_file(template, destination_folder + '/app.js')
-        .then(result => {
-            console.log('Created app.js file');
-        });
-    });
-    */
+    // Create app.js file
+    await config_creation.app_js_creation(config, destination_folder);
+    
     console.log('---------- Finishing nodequelize project creation. Enjoy your API! ----------');
 }
