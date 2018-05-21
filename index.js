@@ -2,6 +2,7 @@
 //CLI interface package
 const program = require('commander');
 const config_creation = require('./config_creation');
+const route_creation = require('./route_creation');
 
 //Version command
 program
@@ -42,6 +43,18 @@ async function create_project(config_file, destination_folder_param) {
     
     // Create app.js file
     await config_creation.app_js_creation(config, destination_folder);
+
+    // Models file
+    await config_creation.models_index_creation(config, destination_folder);
     
+    // Static files
+    await config_creation.static_files_creation(config, destination_folder);
+    
+    // Package.json file
+    await config_creation.package_json_creation(config, destination_folder);
+
+    // Routes creation
+    await route_creation.routes_index_creation(config, destination_folder);
+
     console.log('---------- Finishing nodequelize project creation. Enjoy your API! ----------');
 }

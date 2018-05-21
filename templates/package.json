@@ -12,6 +12,7 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "jade": "^1.11.0",
     "sequelize": "^4.37.8",
     "tedious": "^2.6.1",
     "winston": "^2.4.2"
