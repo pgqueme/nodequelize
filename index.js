@@ -6,7 +6,7 @@ const route_creation = require('./route_creation');
 
 //Version command
 program
-    .version('0.0.4')
+    .version('0.1.0')
     .description('NodeJS REST API generator using Express and Sequelize');
 
 //Create project
