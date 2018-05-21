@@ -12,19 +12,22 @@ function write_file(text, route) {
         mkdirp(getDirName(route), function (err) {
             if (err){
                 //Error creating folder
-                reject(err);
+                console.log(err);
+                reject(null);
             }
-            
-            //Write to the file
-            fs.writeFile(route, text, { flags: 'wx' }, function(err) {
-                if(err) {
-                    //Error writing to file
-                    reject(err);
-                }
-                else {
-                    resolve('Done writing file');
-                }
-            }); 
+            else {
+                //Write to the file
+                fs.writeFile(route, text, { flags: 'wx' }, function(err) {
+                    if(err) {
+                        //Error writing to file
+                        console.log(err);
+                        reject(null);
+                    }
+                    else {
+                        resolve('Done writing file');
+                    }
+                }); 
+            }
         });
     });
 }

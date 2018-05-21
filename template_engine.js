@@ -11,14 +11,16 @@ function template_creation(route, params) {
         fs.readFile(route, 'utf8', (err, data) => {
             if (err){
                 //Error reading the template
+                console.log(err);
                 reject(err);
             }
-    
-            //Compile the template
-            const source = data;
-            const template = handlebars.compile(source);
-            const contents = template(params);
-            resolve(contents);
+            else {
+                //Compile the template
+                const source = data;
+                const template = handlebars.compile(source);
+                const contents = template(params);
+                resolve(contents);
+            }
         });
     });
 };
