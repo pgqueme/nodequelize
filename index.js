@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 //CLI interface package
 const program = require('commander');
-const config_creation = require('./config_creation');
-const route_creation = require('./route_creation');
+const configCreation = require('./configCreation');
+const routeCreation = require('./routeCreation');
+const modelCreation = require('./modelCreation');
 const version = "0.2.0";
 
 //Version command
@@ -37,25 +38,28 @@ async function create_project(configFile, destinationFolderParam) {
     }
 
     // Create bin/www file
-    await config_creation.wwwCreation(config, destinationFolder);
+    await configCreation.wwwCreation(config, destinationFolder);
     
     // Create database configuration file
-    await config_creation.dbConfigCreation(config, destinationFolder);    
+    await configCreation.dbConfigCreation(config, destinationFolder);    
     
     // Create app.js file
-    await config_creation.appJSCreation(config, destinationFolder);
+    await configCreation.appJSCreation(config, destinationFolder);
 
     // Models file
-    await config_creation.modelsIndexCreation(config, destinationFolder);
+    await configCreation.modelsIndexCreation(config, destinationFolder);
     
     // Static files
-    await config_creation.staticFilesCreation(config, destinationFolder);
+    await configCreation.staticFilesCreation(config, destinationFolder);
     
     // Package.json file
-    await config_creation.packageJSONCreation(config, destinationFolder);
+    await configCreation.packageJSONCreation(config, destinationFolder);
+    
+    // Models creation
+    await modelCreation.modelsCreation(config, destinationFolder);
 
     // Routes creation
-    await route_creation.routesIndexCreation(config, destinationFolder);
+    await routeCreation.routesIndexCreation(config, destinationFolder);
 
     console.log('---------- Finishing nodequelize project creation. Enjoy your API! ----------');
 }

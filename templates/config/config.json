@@ -4,7 +4,7 @@
         "password": "{{production.password}}",
         "database": "{{production.database}}",
         "host": "{{production.host}}",
-        "port": "{{production.port}}",
+        "port": {{production.port}},
         "dialect": "{{production.dialect}}"
     },
     "development": {
@@ -12,7 +12,7 @@
         "password": "{{development.password}}",
         "database": "{{development.database}}",
         "host": "{{development.host}}",
-        "port": "{{development.port}}",
+        "port": {{development.port}},
         "dialect": "{{development.dialect}}"
     }
   }

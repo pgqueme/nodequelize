@@ -1,7 +1,7 @@
 /**
  * Creates a template file
  */
-function templateCreation(route, params) {
+function templateCreation(route, params, helpers) {
     //Requires
     const fs = require('fs');
     const handlebars = require('handlebars');
