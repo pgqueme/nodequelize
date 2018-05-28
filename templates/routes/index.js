@@ -5,10 +5,14 @@ var utils = require('../utils');
 var apiVersion = '{{apiVersion}}';
 
 //Required routes
-{{routes_requires}}
+{{#models}}
+const {{modelName}}Route = require('./{{modelName}}');
+{{/models}}
 
 //Registered routes
-{{routes_endpoints}}
+{{#models}}
+router.use('/{{routeEndpoint}}', {{modelName}}Route);
+{{/models}}
 
 //API start
 router.get('/', function(req, res) {

@@ -58,8 +58,5 @@ async function create_project(configFile, destinationFolderParam) {
     // Models creation
     await modelCreation.modelsCreation(config, destinationFolder);
 
-    // Routes creation
-    await routeCreation.routesIndexCreation(config, destinationFolder);
-
     console.log('---------- Finishing nodequelize project creation. Enjoy your API! ----------');
 }

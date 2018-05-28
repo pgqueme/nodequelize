@@ -90,6 +90,11 @@ async function staticFilesCreation(config, destinationFolder){
     await fileCreation.writeFile(utilsTemplate, destinationFolder + '/utils.js')
     console.log('[+] Created utils.js file');
     
+    // Adding controllers/utils.js
+    var utilsControllersTemplate = await templateEngine.templateCreation(__dirname + '/templates/controllers/utils.js', {});
+    await fileCreation.writeFile(utilsControllersTemplate, destinationFolder + '/controllers/utils.js')
+    console.log('[+] Created controllers/utils.js file');
+    
     // Adding views
     var errorTemplate = await templateEngine.templateCreation(__dirname + '/templates/views/error.jade', {});
     await fileCreation.writeFile(errorTemplate, destinationFolder + '/views/error.jade')
