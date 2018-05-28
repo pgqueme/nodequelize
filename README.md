@@ -96,9 +96,11 @@ Nodequelize is a NodeJS REST API generator powered by Express and Sequelize. It 
 - Go to your browser and access `http://localhost:4444/api`, you should see a message indicating that it's working!
 
 ### Using the API endpoints
-Nodequelize generates 5 endpoints that should cover the basic CRUD use cases:
+Nodequelize generates 6 endpoints that should cover the basic CRUD use cases:
 #### List all the records `GET /api/myModel/`
 Returns all the records in an array.
+#### Get one specific record `GET /api/myModel/id/:id`
+Returns the record with the specified id.
 #### Create a new record `POST /api/myModel/`
 Creates a new record. You should send your data on an `application/json` body.
 #### Update a record `PUT /api/myModel/`
