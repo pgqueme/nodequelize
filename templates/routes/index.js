@@ -2,18 +2,22 @@ var models  = require('../models');
 var express = require('express');
 var router = express.Router();
 var utils = require('../utils');
-var apiVersion = '{{api_version}}';
+var apiVersion = '{{apiVersion}}';
 
 //Required routes
-{{routes_requires}}
+{{#models}}
+const {{modelName}}Route = require('./{{modelName}}');
+{{/models}}
 
 //Registered routes
-{{routes_endpoints}}
+{{#models}}
+router.use('/{{routeEndpoint}}', {{modelName}}Route);
+{{/models}}
 
 //API start
 router.get('/', function(req, res) {
     res.status(200).send({
-        message: 'Welcome to the {{package_name}} API - v' + apiVersion,
+        message: 'Welcome to the {{packageName}} API - v' + apiVersion,
     });
 });
 
