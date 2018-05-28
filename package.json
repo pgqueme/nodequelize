@@ -1,6 +1,6 @@
 {
   "name": "nodequelize",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "NodeJS REST API generator using Express and Sequelize",
   "main": "index.js",
   "preferGlobal": true,

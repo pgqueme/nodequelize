@@ -1,7 +1,7 @@
 /**
  * Writes a file to the specified folder inside the current route.
  */
-function write_file(text, route) {
+function writeFile(text, route) {
     //File system requires
     var fs = require('fs');
     var mkdirp = require('mkdirp');
@@ -32,4 +32,4 @@ function write_file(text, route) {
     });
 }
 
-module.exports = { write_file };
+module.exports = { writeFile };

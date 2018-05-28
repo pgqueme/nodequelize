@@ -1,11 +1,11 @@
 {
-  "name": "{{package_name}}",
-  "version": "{{package_version}}",
-  "description": "{{package_description}}",
+  "name": "{{packageName}}",
+  "version": "{{packageVersion}}",
+  "description": "{{packageDescription}}",
   "scripts": {
     "start": "node ./bin/www"
   },
-  "author": "{{package_author}}",
+  "author": "{{packageAuthor}}",
   "dependencies": {
     "basic-auth": "^2.0.0",
     "body-parser": "^1.18.3",

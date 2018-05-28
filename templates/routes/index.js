@@ -2,7 +2,7 @@ var models  = require('../models');
 var express = require('express');
 var router = express.Router();
 var utils = require('../utils');
-var apiVersion = '{{api_version}}';
+var apiVersion = '{{apiVersion}}';
 
 //Required routes
 {{routes_requires}}
@@ -13,7 +13,7 @@ var apiVersion = '{{api_version}}';
 //API start
 router.get('/', function(req, res) {
     res.status(200).send({
-        message: 'Welcome to the {{package_name}} API - v' + apiVersion,
+        message: 'Welcome to the {{packageName}} API - v' + apiVersion,
     });
 });
 

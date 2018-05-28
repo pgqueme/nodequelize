@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/{{api_route}}', index);
+app.use('/{{apiRoute}}', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

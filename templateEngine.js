@@ -1,7 +1,7 @@
 /**
  * Creates a template file
  */
-function template_creation(route, params) {
+function templateCreation(route, params) {
     //Requires
     const fs = require('fs');
     const handlebars = require('handlebars');
@@ -25,4 +25,4 @@ function template_creation(route, params) {
     });
 };
 
-module.exports = { template_creation };
+module.exports = { templateCreation };

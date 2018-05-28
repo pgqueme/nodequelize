@@ -15,7 +15,7 @@ if (config.use_env_variable) {
     host: config.host,
     port: config.port,
     dialect: config.dialect,
-    {{dialect_options}}
+    {{dialectOptions}}
   });
 }
 
