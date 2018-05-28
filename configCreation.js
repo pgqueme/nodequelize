@@ -37,11 +37,22 @@ async function appJSCreation(config, destinationFolder) {
  */
 async function packageJSONCreation(config, destinationFolder) {
     var packageInfo = config['packageInfo'];
+
+    // Dialects dependences
+    var dialectDependences = {
+        "mssql": { library: "tedious", version: "^2.6.1" },
+        "mysql": { library: "mysql2", version: "^1.5.3" },
+        "sqlite": { library: "sqlite3", version: "^4.0.0" },
+        "postgres": { library: "pg", version: "^7.4.3" },
+    };
+    var dialectDependence = config['databaseConfig']['prod']['dialect'];
+
     var packageJSONConfig = {
         packageName: packageInfo['name'] || 'nodequelize-api',
         packageVersion: packageInfo['version'] || '1.0.0',
         packageDescription: packageInfo['description'] || 'My Nodequelize automatically generated API',
         packageAuthor: packageInfo['author'] || 'Nodequelize',
+        dialectDependence: dialectDependences[dialectDependence]
     };
     var template = await templateEngine.templateCreation(__dirname + '/templates/package.json', packageJSONConfig);
     await fileCreation.writeFile(template, destinationFolder + '/package.json')

@@ -14,7 +14,7 @@
     "express": "^4.16.3",
     "jade": "^1.11.0",
     "sequelize": "^4.37.8",
-    "tedious": "^2.6.1",
+    "{{dialectDependence.library}}": "{{dialectDependence.version}}",
     "winston": "^2.4.2"
   }
 }
