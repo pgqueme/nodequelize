@@ -1,4 +1,5 @@
 const db = require('../models/index').sequelize;
+const Op = require('../models/index').Sequelize.Op;
 const utils = require('./utils');
 const logger = require('../utils').logger;
 const {{modelName}} = require ('../models').{{modelName}};
@@ -44,6 +45,36 @@ module.exports = {
         } catch (error) {
             logger.error('Paginated search on {{modelName}} with error: ' + error);
             return res.status(500).send({ error: true, message: 'Your search could not be completed.' });
+        }
+    },
+
+    async paginatedLike(res, options) {
+        try {
+            var results = await {{modelName}}.findAndCountAll({
+                where: {
+                    [ options.field ]: { [Op.like]: '%' + options.value + '%' }
+                },
+                offset: options.offset,
+                limit: options.limit,
+                {{#if includedModels}}
+                include: [
+                    {{#includedModels}}
+                    { model: {{modelName}} },
+                    {{/includedModels}}
+                ],
+                {{/if}}
+            });
+            return res.status(200).send({
+                error: false,
+                total: results.count,
+                records: results.rows
+            });
+        } catch (error) {
+            logger.error('Paginated like search on {{modelName}} with error: ' + error);
+            return res.status(500).send({
+                error: true,
+                message: 'Your search could not be completed.'
+            });
         }
     },
     
@@ -127,10 +158,10 @@ module.exports = {
             const result = await {{modelName}}.destroy({
                 where: { id: req.params.id },
             });
-            res.status(201).send(result);
+            res.status(201).send({ result });
         } catch (error) {
-            logger.error('Read on {{modelName}} with error: ' + error);
-            return res.status(500).send({ error: true, message: 'Your record could not be read.' });
+            logger.error('Delete on {{modelName}} with error: ' + error);
+            return res.status(500).send({ error: true, message: 'Your record could not be deleted.' });
         }
     },
 };

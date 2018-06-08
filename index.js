@@ -4,7 +4,7 @@ const program = require('commander');
 const configCreation = require('./configCreation');
 const routeCreation = require('./routeCreation');
 const modelCreation = require('./modelCreation');
-const version = "0.2.0";
+const version = "0.2.1";
 
 //Version command
 program
