@@ -18,6 +18,7 @@ async function modelsCreation(config, destinationFolder) {
     for (let i = 0; i < models.length; i++) {
         // Get data
         const model = models[i];
+        var fields = model['fields'].slice();
         
         // Included models
         var includedModels = [];
@@ -25,6 +26,10 @@ async function modelsCreation(config, destinationFolder) {
             const association = model['associations'][j];
             if(association["include"]){
                 includedModels.push({ "modelName": association["model"] })
+            }
+            // Add all the belongsTo associations to fields
+            if(association["type"] === 'belongsTo') {
+                fields.push({ name: association['foreignKey'] });
             }
         }
         
@@ -46,6 +51,7 @@ async function modelsCreation(config, destinationFolder) {
         console.log('[+] Created ' + modelConfig.modelName + ' model');
         
         // Create the controller
+        modelConfig.fields = fields;
         var templateController = await templateEngine.templateCreation(__dirname + '/templates/controllers/controller.js', modelConfig);
         await fileCreation.writeFile(templateController, destinationFolder + '/controllers/' + modelConfig.modelName + '.js');
         console.log('[+] Created ' + modelConfig.modelName + ' controller');
