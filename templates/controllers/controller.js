@@ -17,7 +17,15 @@ module.exports = {
         var options = utils.getSearchOptions(req);
         switch(options.field){
             case 'any': {
-                this.paginatedList(res, options);
+                this.paginatedList(req, res, options, 'list');
+                break;
+            }
+            case 'field': {
+                this.paginatedList(req, res, options, 'like');
+                break;
+            }
+            case 'exact': {
+                this.paginatedList(req, res, options, 'exact');
                 break;
             }
             default:{
@@ -28,18 +36,27 @@ module.exports = {
         }
     },
 
-    async paginatedList(res, options){
+    async paginatedList(req, res, options, type = 'list'){
         try {
+            var whereClause = {};
+            if(type == 'like') whereClause[options.field] = { [Op.like]: '%' + options.value + '%' };
+            else if(type == 'exact') whereClause[options.field] = options.value;
+
+            var includes = [
+                {{#includedModels}}
+                    { model: {{modelName}} },
+                {{/includedModels}}
+            ];
+
+            var resFiltros = await this.filtros(req, options, whereClause, includes);
+            whereClause = resFiltros.whereClause;
+            includes = resFiltros.includes;
+
             var results = await {{modelName}}.findAndCountAll({
+                where: whereClause,
+                include: includes,
                 offset: options.offset,
                 limit: options.limit,
-                {{#if includedModels}}
-                include: [
-                    {{#includedModels}}
-                    { model: {{modelName}} },
-                    {{/includedModels}}
-                ],
-                {{/if}}
             });
             return res.status(200).send({ error: false, total: results.count, records: results.rows });
         } catch (error) {
@@ -47,66 +64,57 @@ module.exports = {
             return res.status(500).send({ error: true, message: 'Your search could not be completed.' });
         }
     },
-
-    async paginatedLike(res, options) {
+    
+    async filtros(req, options, whereClause, includes) {
         try {
-            var results = await {{modelName}}.findAndCountAll({
-                where: {
-                    [ options.field ]: { [Op.like]: '%' + options.value + '%' }
-                },
-                offset: options.offset,
-                limit: options.limit,
-                {{#if includedModels}}
-                include: [
-                    {{#includedModels}}
-                    { model: {{modelName}} },
-                    {{/includedModels}}
-                ],
-                {{/if}}
-            });
-            return res.status(200).send({
-                error: false,
-                total: results.count,
-                records: results.rows
-            });
-        } catch (error) {
-            logger.error('Paginated like search on {{modelName}} with error: ' + error);
-            return res.status(500).send({
-                error: true,
-                message: 'Your search could not be completed.'
-            });
+            return { whereClause: whereClause, includes: includes };
+        } catch(error) {
+            logger.error('Filtros de Usuario: ' + error);
+            return { whereClause: whereClause, includes: includes };
         }
     },
-    
+
     async createRecord(req, res) {
+        var transaction = await db.transaction();
         try {
+            var data = req.body;
             const result = await {{modelName}}.create({
                 {{#fields}}
-                {{name}}: req.body.{{name}},
+                {{name}}: data.{{name}},
                 {{/fields}}
-            });
-            res.status(201).send({ error: false, result: result });
+            }, { transaction: transaction });
+            
+            await transaction.commit();
+            return res.status(201).send({ error: false, result: result });
         } catch (error) {
             logger.error('Create on {{modelName}} with error: ' + error);
+            await transaction.rollback();
             return res.status(500).send({ error: true, message: 'Your record could not be created.' });
         }
     },
 
     async updateRecord(req, res) {
+        var transaction = await db.transaction();
         try {
+            var RegistroId = req.body.id;
+            var data = req.body;
             const result = await {{modelName}}.update(
                 {
                     {{#fields}}
-                    {{name}}: req.body.{{name}},
+                    {{name}}: data.{{name}},
                     {{/fields}}
                 },
                 {
-                    where: { id: req.body.id }
+                    where: { id: RegistroId },
+                    transaction: transaction,
                 }
             );
-            res.status(201).send({ error: false, result: result });
+
+            await transaction.commit();
+            return res.status(201).send({ error: false, result: result });
         } catch (error) {
             logger.error('Update on {{modelName}} with error: ' + error);
+            await transaction.rollback();
             return res.status(500).send({ error: true, message: 'Your record could not be updated.' });
         }
     },
@@ -124,10 +132,10 @@ module.exports = {
                 {{/if}}
             });
             if(result){
-                res.status(200).send(result);
+                return res.status(200).send(result);
             }
             else {
-                res.status(404).send({ error: true, message: 'Record not found' });
+                return res.status(404).send({ error: true, message: 'Record not found' });
             }
         } catch (error) {
             logger.error('Read on {{modelName}} with error: ' + error);
@@ -154,13 +162,24 @@ module.exports = {
     },
 
     async deleteRecord(req, res) {
+        var transaction = await db.transaction();
         try {
-            const result = await {{modelName}}.destroy({
-                where: { id: req.params.id },
-            });
-            res.status(201).send({ result });
+            var RegistroId = req.params.id;
+            const result = await {{modelName}}.update(
+                {
+                    isDeleted: true,
+                },
+                {
+                    where: { id: RegistroId },
+                    transaction: transaction,
+                }
+            );
+
+            await transaction.commit();
+            return res.status(201).send({ result });
         } catch (error) {
             logger.error('Delete on {{modelName}} with error: ' + error);
+            await transaction.rollback();
             return res.status(500).send({ error: true, message: 'Your record could not be deleted.' });
         }
     },

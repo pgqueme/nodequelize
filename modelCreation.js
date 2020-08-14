@@ -15,6 +15,7 @@ async function modelsCreation(config, destinationFolder) {
     // Loop through all models
     var models = config['models'];
     var modelsConfigs = [];
+    var modelsConfigsControllers = [];
     for (let i = 0; i < models.length; i++) {
         // Get data
         const model = models[i];
@@ -37,6 +38,7 @@ async function modelsCreation(config, destinationFolder) {
             modelName: model['modelName'],
             tableName: model['tableName'],
             routeEndpoint: model['routeEndpoint'],
+            generateController: model['generateController'],
             fields: model['fields'],
             associations: model['associations'],
             includedModels: includedModels,
@@ -44,32 +46,36 @@ async function modelsCreation(config, destinationFolder) {
         }
         
         modelsConfigs.push(modelConfig);
+        if(modelConfig.generateController) modelsConfigsControllers.push(modelConfig);
         
         // Create the model
         var templateModel = await templateEngine.templateCreation(__dirname + '/templates/models/model.js', modelConfig);
         await fileCreation.writeFile(templateModel, destinationFolder + '/models/' + modelConfig.modelName + '.js');
         console.log('[+] Created ' + modelConfig.modelName + ' model');
         
-        // Create the controller
         modelConfig.fields = fields;
-        var templateController = await templateEngine.templateCreation(__dirname + '/templates/controllers/controller.js', modelConfig);
-        await fileCreation.writeFile(templateController, destinationFolder + '/controllers/' + modelConfig.modelName + '.js');
-        console.log('[+] Created ' + modelConfig.modelName + ' controller');
+        if(modelConfig.generateController) {
+            // Create the controller
+            var templateController = await templateEngine.templateCreation(__dirname + '/templates/controllers/controller.js', modelConfig);
+            await fileCreation.writeFile(templateController, destinationFolder + '/controllers/' + modelConfig.modelName + '.js');
+            console.log('[+] Created ' + modelConfig.modelName + ' controller');
+
+            // Create the routes
+            var templateRoutes = await templateEngine.templateCreation(__dirname + '/templates/routes/route.js', modelConfig);
+            await fileCreation.writeFile(templateRoutes, destinationFolder + '/routes/' + modelConfig.modelName + '.js');
+            console.log('[+] Created ' + modelConfig.modelName + ' router');
+        }
         
-        // Create the routes
-        var templateRoutes = await templateEngine.templateCreation(__dirname + '/templates/routes/route.js', modelConfig);
-        await fileCreation.writeFile(templateRoutes, destinationFolder + '/routes/' + modelConfig.modelName + '.js');
-        console.log('[+] Created ' + modelConfig.modelName + ' router');
     }
     
     // Create the controller index
-    var templateControllerIndex = await templateEngine.templateCreation(__dirname + '/templates/controllers/index.js', { models: modelsConfigs });
+    var templateControllerIndex = await templateEngine.templateCreation(__dirname + '/templates/controllers/index.js', { models: modelsConfigsControllers });
     await fileCreation.writeFile(templateControllerIndex, destinationFolder + '/controllers/index.js');
     console.log('[+] Created controllers/index.js');
     
     // Create the routes index
     var routeIndexConfig = {
-        models: modelsConfigs,
+        models: modelsConfigsControllers,
         apiVersion: config['packageInfo']['version'],
         auth: config['authConfig']
     };

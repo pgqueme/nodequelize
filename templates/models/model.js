@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
             {{/fields}}
         },
         {
-            timestamps: false,
+            timestamps: true,
             tableName: '{{tableName}}'
         }
     );

@@ -7,14 +7,21 @@
   },
   "author": "{{packageAuthor}}",
   "dependencies": {
-    "basic-auth": "^2.0.0",
-    "body-parser": "^1.18.3",
-    "cookie-parser": "^1.4.3",
-    "cors": "^2.8.4",
-    "express": "^4.16.3",
+    "basic-auth": "^2.0.1",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "jade": "^1.11.0",
-    "sequelize": "^4.37.8",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
+    "multer": "^1.4.2",
+    "multer-azure": "^2.0.1",
+    "nodemailer": "^6.4.6",
+    "sequelize": "^5.21.2",
     "{{dialectDependence.library}}": "{{dialectDependence.version}}",
-    "winston": "^2.4.2"
+    "winston": "^3.2.1"
   }
 }

@@ -40,7 +40,7 @@ async function packageJSONCreation(config, destinationFolder) {
 
     // Dialects dependences
     var dialectDependences = {
-        "mssql": { library: "tedious", version: "^2.6.1" },
+        "mssql": { library: "tedious", version: "^6.6.2" },
         "mysql": { library: "mysql2", version: "^1.5.3" },
         "sqlite": { library: "sqlite3", version: "^4.0.0" },
         "postgres": { library: "pg", version: "^7.4.3" },
@@ -100,6 +100,11 @@ async function staticFilesCreation(config, destinationFolder){
     var utilsTemplate = await templateEngine.templateCreation(__dirname + '/templates/utils.js', {});
     await fileCreation.writeFile(utilsTemplate, destinationFolder + '/utils.js')
     console.log('[+] Created utils.js file');
+    
+    // Adding auth.js
+    var utilsTemplate = await templateEngine.templateCreation(__dirname + '/templates/auth.js', {});
+    await fileCreation.writeFile(utilsTemplate, destinationFolder + '/auth.js')
+    console.log('[+] Created auth.js file');
     
     // Adding controllers/utils.js
     var utilsControllersTemplate = await templateEngine.templateCreation(__dirname + '/templates/controllers/utils.js', {});
